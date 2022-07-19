@@ -1,13 +1,17 @@
 import React from "react";
 import "./Login.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SingUp from "../SingUP/SingUp";
 import { useState } from "react";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import auth from "../../firebase.init";
 const Login = () => {
-   const [createUserWithEmailAndPassword, user, loading, error] =
-      useCreateUserWithEmailAndPassword(auth);
+   const [signInWithEmailAndPassword, user, loading, error] =
+      useSignInWithEmailAndPassword(auth);
+   let navigate = useNavigate();
+   let location = useLocation();
+   let from = location.state?.from?.pathname || "/";
+
    const [email, setEmail] = useState("");
    const handleEmail = (e) => {
       setEmail(e.target.value);
@@ -18,13 +22,10 @@ const Login = () => {
    };
    const formSubmit = (e) => {
       e.preventDefault();
-      createUserWithEmailAndPassword(email, password);
+      signInWithEmailAndPassword(email, password);
    };
-   console.log(email, password);
-
-   const nevigate = useNavigate();
    if (user) {
-      nevigate("/shop");
+      navigate(from, { replace: true });
    }
 
    return (

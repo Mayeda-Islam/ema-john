@@ -22,7 +22,7 @@ const SingUp = () => {
       setConfirmPassword(e.target.value);
    };
    if (user) {
-      navigate("/shop");
+      navigate("/login");
    }
    const fromSubmit = (e) => {
       e.preventDefault();
